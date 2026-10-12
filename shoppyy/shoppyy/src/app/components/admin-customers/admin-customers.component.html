@@ -1,0 +1,323 @@
+<div class="admin-customers-page">
+
+  <!-- ========================= -->
+  <!-- Page Header -->
+  <!-- ========================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Customers</h1>
+
+      <p>
+        Manage and view all customer accounts
+      </p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      (click)="refreshCustomers()">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Error -->
+  <!-- ========================= -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    <i class="bi bi-exclamation-circle"></i>
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Stats -->
+  <!-- ========================= -->
+
+  <div
+    class="stats-grid"
+    *ngIf="!loading">
+
+    <!-- Total -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-people"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>Total Customers</span>
+
+        <strong>
+          {{ getTotalCustomers() }}
+        </strong>
+
+        <small>
+          All registered customers
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- New This Month -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-person-plus"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>New This Month</span>
+
+        <strong>
+          {{ getNewCustomersThisMonth() }}
+        </strong>
+
+        <small>
+          New customer accounts
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- Accounts -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-person-check"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>Customer Accounts</span>
+
+        <strong>
+          {{ customers.length }}
+        </strong>
+
+        <small>
+          Registered users
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Search -->
+  <!-- ========================= -->
+
+  <div
+    class="customers-toolbar"
+    *ngIf="!loading">
+
+    <div class="search-box">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        placeholder="Search by name or email..."
+        [(ngModel)]="searchTerm"
+        (input)="searchCustomers()"
+      />
+
+    </div>
+
+    <div class="results-count">
+
+      Showing
+      <strong>{{ filteredCustomers.length }}</strong>
+      customers
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Loading -->
+  <!-- ========================= -->
+
+  <div
+    class="loading-state"
+    *ngIf="loading">
+
+    <div class="spinner"></div>
+
+    <p>Loading customers...</p>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Customers Table -->
+  <!-- ========================= -->
+
+  <div
+    class="customers-card"
+    *ngIf="!loading && filteredCustomers.length > 0">
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Customer</th>
+
+            <th>Email</th>
+
+            <th>Joined</th>
+
+            <th>Role</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let customer of filteredCustomers">
+
+            <!-- Customer -->
+
+            <td>
+
+              <div class="customer-info">
+
+                <div class="customer-avatar">
+
+                  {{ getCustomerInitial(customer.name) }}
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ customer.name }}
+                  </strong>
+
+                  <span>
+                    Customer
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- Email -->
+
+            <td>
+
+              <div class="email-cell">
+
+                <i class="bi bi-envelope"></i>
+
+                {{ customer.email }}
+
+              </div>
+
+            </td>
+
+
+            <!-- Joined -->
+
+            <td>
+
+              <div class="date-cell">
+
+                <i class="bi bi-calendar3"></i>
+
+                {{ formatDate(customer.createdAt) }}
+
+              </div>
+
+            </td>
+
+
+            <!-- Role -->
+
+            <td>
+
+              <span class="role-badge">
+
+                <i class="bi bi-person"></i>
+
+                Customer
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- Empty State -->
+  <!-- ========================= -->
+
+  <div
+    class="empty-state"
+    *ngIf="!loading && filteredCustomers.length === 0">
+
+    <div class="empty-icon">
+
+      <i class="bi bi-people"></i>
+
+    </div>
+
+    <h3>
+      No Customers Found
+    </h3>
+
+    <p *ngIf="searchTerm">
+      No customer matches your search.
+    </p>
+
+    <p *ngIf="!searchTerm">
+      There are no registered customers yet.
+    </p>
+
+  </div>
+
+</div>

@@ -1,0 +1,321 @@
+/* ================================
+   PRODUCTS GRID
+================================ */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 260px);
+  justify-content: center;
+  gap: 30px;
+}
+
+/* ================================
+   PRODUCT CARD
+================================ */
+
+.product-card {
+  width: 260px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all .3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,.12);
+}
+
+/* ================================
+   PRODUCT IMAGE
+================================ */
+
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #f9f1f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: .4s;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+/* Badge */
+
+.product-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 2;
+  background: #c98282;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Wishlist */
+
+/* ================================
+   WISHLIST
+================================ */
+
+.wishlist {
+
+  position: absolute;
+
+  top: 15px;
+
+  right: 15px;
+
+  width: 42px;
+
+  height: 42px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #c98282;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: all .3s ease;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,.1);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 5;
+
+}
+
+.wishlist:hover {
+
+  background: #c98282;
+
+  color: #fff;
+
+  transform: scale(1.08);
+
+}
+
+.wishlist.active {
+
+  background: #c98282;
+
+  color: #fff;
+
+}
+
+.wishlist.active:hover {
+
+  background: #b76f6f;
+
+  transform: scale(1.08);
+
+}
+
+/* ================================
+   PRODUCT INFO
+================================ */
+
+.product-info {
+  padding: 18px;
+}
+
+.category {
+  color: #c98282;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.product-info h3 {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.price {
+  color: #c98282;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.add-cart {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: #c98282;
+  color: white;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.add-cart:hover {
+  background: #b76f6f;
+}
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 1200px) {
+
+  .products-grid {
+    grid-template-columns: repeat(3, 260px);
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .products-grid {
+    grid-template-columns: repeat(2, 260px);
+  }
+
+  .products-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .products-header {
+    padding: 60px 20px;
+  }
+
+  .header-content h1 {
+    font-size: 36px;
+  }
+
+  .products-section {
+    padding: 20px;
+  }
+
+  .products-grid {
+    grid-template-columns: 260px;
+  }
+
+  .filter-box {
+    width: 100%;
+  }
+
+  .filter-box select {
+    width: 100%;
+  }
+
+}
+.filter-section{
+
+  background:white;
+
+  padding:25px;
+
+  margin:30px 0;
+
+  border-radius:15px;
+
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+}
+
+
+.filter-section h3{
+
+  margin-bottom:20px;
+
+}
+
+
+
+.categories{
+
+  display:flex;
+
+  gap:15px;
+
+  flex-wrap:wrap;
+
+}
+
+
+
+.categories button{
+
+  border:none;
+
+  padding:10px 25px;
+
+  border-radius:25px;
+
+  background:#f2f2f2;
+
+  cursor:pointer;
+
+  transition:.3s;
+
+}
+
+
+
+.categories button:hover,
+.categories button.active{
+
+  background:#ff6b6b;
+
+  color:white;
+
+}
+
+
+
+@media(max-width:600px){
+
+.categories{
+
+  flex-direction:column;
+
+}
+
+
+.categories button{
+
+  width:100%;
+
+}
+
+}

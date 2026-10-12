@@ -1,0 +1,329 @@
+.product-details-page {
+background: #fff8f7;
+min-height: calc(100vh - 80px);
+padding: 35px 0 70px;
+}
+
+/* Breadcrumb */
+
+.breadcrumb-custom {
+display: flex;
+gap: 10px;
+color: #9b7773;
+font-size: 14px;
+margin-bottom: 35px;
+}
+
+.breadcrumb-custom span:last-child {
+color: #4a3532;
+font-weight: 500;
+}
+
+/* Main */
+
+.product-details {
+background: #ffffff;
+border-radius: 20px;
+padding: 45px;
+box-shadow: 0 8px 30px rgba(90, 60, 55, 0.08);
+}
+
+/* Image */
+
+.product-image-box {
+position: relative;
+background: #fff8f7;
+border-radius: 18px;
+height: 480px;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+
+.product-main-image {
+width: 75%;
+height: 85%;
+object-fit: contain;
+transition: transform 0.3s ease;
+}
+
+.product-main-image:hover {
+transform: scale(1.04);
+}
+
+/* Discount */
+
+.discount-badge {
+position: absolute;
+top: 20px;
+left: 20px;
+background: #b76e79;
+color: white;
+padding: 8px 14px;
+border-radius: 20px;
+font-size: 13px;
+font-weight: 600;
+z-index: 2;
+}
+
+/* Best Seller */
+
+.best-seller {
+position: absolute;
+top: 20px;
+right: 20px;
+background: #f3dfdc;
+color: #7d5550;
+padding: 8px 14px;
+border-radius: 20px;
+font-size: 13px;
+font-weight: 600;
+z-index: 2;
+}
+
+/* Product Info */
+
+.product-info {
+padding: 15px 25px;
+}
+
+.category {
+color: #b76e79;
+text-transform: uppercase;
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 1px;
+}
+
+.product-info h1 {
+color: #3f2d2a;
+font-size: 38px;
+font-weight: 600;
+margin: 12px 0 18px;
+}
+
+.description {
+color: #806d69;
+font-size: 16px;
+line-height: 1.8;
+max-width: 500px;
+}
+
+/* Price */
+
+.price-section {
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 12px;
+margin: 25px 0;
+}
+
+.old-price {
+color: #9c8b87;
+text-decoration: line-through;
+font-size: 18px;
+}
+
+.final-price {
+color: #b76e79;
+font-size: 30px;
+font-weight: 700;
+}
+
+.save-price {
+background: #f5e4e1;
+color: #9b5d66;
+padding: 5px 10px;
+border-radius: 8px;
+font-size: 12px;
+font-weight: 600;
+}
+
+/* Stock */
+
+.stock {
+display: flex;
+align-items: center;
+gap: 8px;
+color: #665450;
+font-size: 14px;
+margin-bottom: 25px;
+}
+
+.stock-dot {
+width: 9px;
+height: 9px;
+background: #79a77d;
+border-radius: 50%;
+}
+
+/* Quantity */
+
+.quantity-section {
+display: flex;
+align-items: center;
+gap: 20px;
+margin-bottom: 25px;
+}
+
+.quantity-label {
+color: #4b3835;
+font-weight: 500;
+}
+
+.quantity-control {
+display: flex;
+align-items: center;
+border: 1px solid #e6d4d1;
+border-radius: 10px;
+overflow: hidden;
+}
+
+.quantity-control button {
+width: 38px;
+height: 38px;
+border: none;
+background: #fff8f7;
+color: #8e5e64;
+font-size: 20px;
+cursor: pointer;
+}
+
+.quantity-control span {
+width: 40px;
+text-align: center;
+color: #4a3532;
+}
+
+/* Add Cart */
+
+.add-cart-btn {
+width: 100%;
+max-width: 430px;
+border: none;
+background: #b76e79;
+color: white;
+padding: 14px 25px;
+border-radius: 12px;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: 0.3s ease;
+}
+
+.add-cart-btn:hover {
+background: #9f5c68;
+transform: translateY(-2px);
+}
+
+.add-cart-btn:disabled {
+background: #cbb8b5;
+cursor: not-allowed;
+transform: none;
+}
+
+/* Responsive */
+
+@media (max-width: 991px) {
+
+.product-details {
+padding: 25px;
+}
+
+.product-image-box {
+height: 400px;
+margin-bottom: 30px;
+}
+
+.product-info {
+padding: 10px;
+}
+
+.product-info h1 {
+font-size: 30px;
+}
+
+}
+
+@media (max-width: 576px) {
+
+.product-details-page {
+padding-top: 20px;
+}
+
+.product-details {
+padding: 15px;
+}
+
+.product-image-box {
+height: 330px;
+}
+
+.product-info h1 {
+font-size: 26px;
+}
+
+.final-price {
+font-size: 26px;
+}
+
+}
+/* Favorite Button */
+
+.favorite-btn {
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid #e6d4d1;
+  border-radius: 50%;
+
+  background: #fff8f7;
+
+  color: #b76e79;
+
+  font-size: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  margin-bottom: 15px;
+
+  transition: all 0.3s ease;
+}
+
+.favorite-btn:hover {
+  background: #f5e4e1;
+  transform: scale(1.08);
+}
+
+.favorite-btn.active {
+  background: #b76e79;
+  color: white;
+  border-color: #b76e79;
+}
+
+.favorite-btn.active:hover {
+  background: #9f5c68;
+}
+
+
+
+.breadcrumb-custom a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.breadcrumb-custom a:hover {
+  color: #b76e79;
+}
+
+.breadcrumb-custom span:last-child {
+  cursor: default;
+}
+

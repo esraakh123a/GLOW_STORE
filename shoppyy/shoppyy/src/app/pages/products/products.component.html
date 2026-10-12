@@ -1,0 +1,109 @@
+<!-- Filter Section -->
+
+<div class="filter-section">
+
+  <h3>Categories</h3>
+
+  <div class="categories">
+
+    <button
+      *ngFor="let category of categories"
+      (click)="filterByCategory(category)"
+      [class.active]="selectedCategory === category">
+
+      {{ category }}
+
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<!-- Products Grid -->
+
+<div class="products-grid">
+
+  <div 
+    class="product-card"
+    *ngFor="let product of filteredProducts">
+
+
+    <div class="product-image">
+
+      <span 
+        class="product-badge"
+        *ngIf="product.badge">
+
+        {{ product.badge }}
+
+      </span>
+
+
+     <img
+ [src]="getImageUrl(product.image)"
+  [alt]="product.name"
+  [routerLink]="['/product-details', product._id]"
+  style="cursor: pointer;">
+
+
+     <button
+  type="button"
+  class="wishlist"
+  [class.active]="isFavorite(product._id)"
+  (click)="toggleFavorite(product); $event.stopPropagation()">
+
+  <span *ngIf="!isFavorite(product._id)">
+    ♡
+  </span>
+
+  <span *ngIf="isFavorite(product._id)">
+    ♥
+  </span>
+
+</button>
+
+    </div>
+
+
+
+    <div class="product-info">
+
+
+      <span class="category">
+        {{ product.category }}
+      </span>
+
+
+      <h3
+  [routerLink]="['/product-details', product._id]"
+  style="cursor: pointer;">
+  {{ product.name }}
+</h3>
+
+
+
+      <div class="product-bottom">
+
+
+        <span class="price">
+          {{ product.price }} EGP
+        </span>
+
+
+        <button class="add-cart" >
+          🛒
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>

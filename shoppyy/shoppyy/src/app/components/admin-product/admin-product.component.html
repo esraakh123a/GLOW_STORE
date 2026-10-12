@@ -1,0 +1,824 @@
+<div class="admin-products-page">
+
+  <!-- ==============================
+       PAGE HEADER
+  =============================== -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Products</h1>
+      <p>Manage your store products</p>
+    </div>
+
+    <button
+      class="add-product-btn"
+      type="button"
+      (click)="openAddProductModal()">
+
+      <i class="bi bi-plus-lg"></i>
+      Add Product
+
+    </button>
+
+  </div>
+
+
+  <!-- ==============================
+       PRODUCTS CARD
+  =============================== -->
+
+  <div class="products-card">
+
+    <!-- Card Header -->
+
+    <div class="products-card-header">
+
+      <div>
+
+        <h2>All Products</h2>
+
+        <span>
+          {{ filteredProducts.length }} products
+        </span>
+
+      </div>
+
+
+      <!-- Search -->
+
+      <div class="search-box">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="searchProducts()"
+          placeholder="Search products..."
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         LOADING
+    =============================== -->
+
+    <div
+      class="loading-container"
+      *ngIf="loading">
+
+      <div class="spinner"></div>
+
+      <p>Loading products...</p>
+
+    </div>
+
+
+    <!-- ==============================
+         PRODUCTS TABLE
+    =============================== -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !loading &&
+        filteredProducts.length > 0
+      ">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let product of filteredProducts">
+
+            <!-- ==============================
+                 PRODUCT
+            =============================== -->
+
+            <td>
+
+              <div class="product-info">
+
+                <div class="product-image">
+
+                  <img
+                    [src]="getImageUrl(product.image)"
+                    [alt]="product.name"
+                  >
+
+                </div>
+
+
+                <div class="product-name">
+
+                  <strong>
+                    {{ product.name }}
+                  </strong>
+
+                  <small>
+                    ID: {{ product._id?.slice(-6) }}
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- ==============================
+                 CATEGORY
+            =============================== -->
+
+            <td>
+
+              <span class="category">
+                {{ product.category }}
+              </span>
+
+            </td>
+
+
+            <!-- ==============================
+                 PRICE
+            =============================== -->
+
+            <td>
+
+              <div class="price-container">
+
+                <strong>
+
+                  {{
+                    product.price -
+                    (
+                      product.price *
+                      product.discount /
+                      100
+                    )
+                    | number:'1.0-2'
+                  }}
+
+                  EGP
+
+                </strong>
+
+
+                <small
+                  *ngIf="product.discount > 0">
+
+                  {{ product.price | number:'1.0-2' }} EGP
+
+                </small>
+
+              </div>
+
+            </td>
+
+
+            <!-- ==============================
+                 STOCK
+            =============================== -->
+
+            <td>
+
+              <span
+                class="stock"
+
+                [class.low-stock]="
+                  product.stock > 0 &&
+                  product.stock <= 5
+                "
+
+                [class.out-stock]="
+                  product.stock === 0
+                ">
+
+                {{ product.stock }}
+
+              </span>
+
+            </td>
+
+
+            <!-- ==============================
+                 STATUS
+            =============================== -->
+
+            <td>
+
+              <span
+                class="status"
+
+                [class.out-status]="
+                  product.stock === 0
+                "
+
+                [class.low-status]="
+                  product.stock > 0 &&
+                  product.stock <= 5
+                "
+
+                [class.active-status]="
+                  product.stock > 5
+                ">
+
+                <span class="status-dot"></span>
+
+
+                <!-- Active -->
+
+                <span
+                  *ngIf="product.stock > 5">
+
+                  Active
+
+                </span>
+
+
+                <!-- Low Stock -->
+
+                <span
+                  *ngIf="
+                    product.stock > 0 &&
+                    product.stock <= 5
+                  ">
+
+                  Low Stock
+
+                </span>
+
+
+                <!-- Out Of Stock -->
+
+                <span
+                  *ngIf="product.stock === 0">
+
+                  Out of Stock
+
+                </span>
+
+              </span>
+
+            </td>
+
+
+            <!-- ==============================
+                 ACTIONS
+            =============================== -->
+
+            <td>
+
+              <div class="actions">
+
+                <!-- Edit -->
+
+                <button
+                  class="action-btn edit-btn"
+                  type="button"
+                  title="Edit Product"
+                  (click)="editProduct(product)">
+
+                  <i class="bi bi-pencil"></i>
+
+                </button>
+
+
+                <!-- Delete -->
+
+                <button
+                  class="action-btn delete-btn"
+                  type="button"
+                  title="Delete Product"
+                  (click)="deleteProduct(product._id)">
+
+                  <i class="bi bi-trash3"></i>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ==============================
+         EMPTY STATE
+    =============================== -->
+
+    <div
+      class="empty-state"
+
+      *ngIf="
+        !loading &&
+        filteredProducts.length === 0
+      ">
+
+      <div class="empty-icon">
+
+        <i class="bi bi-box-seam"></i>
+
+      </div>
+
+
+      <h3>
+
+        {{
+          searchTerm
+            ? 'No Products Found'
+            : 'No Products Yet'
+        }}
+
+      </h3>
+
+
+      <p *ngIf="searchTerm">
+
+        No products match
+        "{{ searchTerm }}"
+
+      </p>
+
+
+      <p *ngIf="!searchTerm">
+
+        You don't have any products yet.
+
+      </p>
+
+
+      <button
+        class="add-product-btn"
+        type="button"
+        (click)="openAddProductModal()">
+
+        <i class="bi bi-plus-lg"></i>
+
+        Add Your First Product
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADD / EDIT PRODUCT MODAL
+===================================================== -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showAddProductModal"
+  (click)="closeAddProductModal()">
+
+
+  <div
+    class="product-modal"
+    (click)="$event.stopPropagation()">
+
+
+    <!-- ==============================
+         MODAL HEADER
+    =============================== -->
+
+    <div class="modal-header">
+
+      <div>
+
+        <h2>
+
+          {{
+            editingProduct
+              ? 'Edit Product'
+              : 'Add New Product'
+          }}
+
+        </h2>
+
+        <p>
+
+          {{
+            editingProduct
+              ? 'Update product information'
+              : 'Add a new product to your store'
+          }}
+
+        </p>
+
+      </div>
+
+
+      <button
+        class="close-modal-btn"
+        type="button"
+        (click)="closeAddProductModal()">
+
+        <i class="bi bi-x-lg"></i>
+
+      </button>
+
+    </div>
+
+
+
+    <!-- ==============================
+         MODAL BODY
+    =============================== -->
+
+    <div class="modal-body">
+
+
+      <!-- ==============================
+           PRODUCT NAME
+      =============================== -->
+
+      <div class="form-group">
+
+        <label>
+
+          Product Name
+          <span>*</span>
+
+        </label>
+
+        <input
+          type="text"
+          [(ngModel)]="newProduct.name"
+          placeholder="Enter product name"
+        >
+
+      </div>
+
+
+
+      <!-- ==============================
+           CATEGORY
+      =============================== -->
+
+      <div class="form-group">
+
+        <label>
+
+          Category
+          <span>*</span>
+
+        </label>
+
+        <select
+          [(ngModel)]="newProduct.category">
+
+          <option value="">
+            Select category
+          </option>
+
+          <option value="skincare">
+            Skincare
+          </option>
+
+          <option value="haircare">
+            Haircare
+          </option>
+
+          <option value="makeup">
+            Makeup
+          </option>
+
+        </select>
+
+      </div>
+
+
+
+      <!-- ==============================
+           PRICE + DISCOUNT
+      =============================== -->
+
+      <div class="form-row">
+
+
+        <!-- Price -->
+
+        <div class="form-group">
+
+          <label>
+
+            Price
+            <span>*</span>
+
+          </label>
+
+          <div class="input-with-suffix">
+
+            <input
+              type="number"
+              [(ngModel)]="newProduct.price"
+              placeholder="0"
+              min="0"
+            >
+
+            <span>
+              EGP
+            </span>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- Discount -->
+
+        <div class="form-group">
+
+          <label>
+            Discount
+          </label>
+
+          <div class="input-with-suffix">
+
+            <input
+              type="number"
+              [(ngModel)]="newProduct.discount"
+              placeholder="0"
+              min="0"
+              max="100"
+            >
+
+            <span>
+              %
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ==============================
+           STOCK
+      =============================== -->
+
+      <div class="form-group">
+
+        <label>
+
+          Stock
+          <span>*</span>
+
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="newProduct.stock"
+          placeholder="Enter available quantity"
+          min="0"
+        >
+
+      </div>
+
+
+
+      <!-- ==============================
+           PRODUCT IMAGE
+      =============================== -->
+
+      <div class="form-group">
+
+        <label>
+
+          Product Image
+          <span>*</span>
+
+        </label>
+
+
+        <!-- Upload Box -->
+
+        <div class="image-upload-box">
+
+          <input
+            type="file"
+            id="productImage"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
+            (change)="onImageSelected($event)"
+          >
+
+
+          <label
+            for="productImage"
+            class="image-upload-label">
+
+            <i class="bi bi-cloud-arrow-up"></i>
+
+            <span>
+              Choose Product Image
+            </span>
+
+            <small>
+              JPG, PNG or WEBP — Max 5MB
+            </small>
+
+          </label>
+
+        </div>
+
+
+        <!-- ==============================
+             IMAGE PREVIEW
+        =============================== -->
+
+        <div
+          class="image-preview"
+          *ngIf="imagePreview">
+
+          <img
+            [src]="imagePreview"
+            alt="Product Preview"
+          >
+
+
+          <button
+            type="button"
+            class="remove-image-btn"
+            title="Remove image"
+            (click)="removeSelectedImage()">
+
+            <i class="bi bi-x"></i>
+
+          </button>
+
+        </div>
+
+
+        <!-- Current image message while editing -->
+
+        <small
+          class="image-edit-hint"
+          *ngIf="
+            editingProduct &&
+            !selectedImage
+          ">
+
+          Current product image. Choose a new image
+          if you want to replace it.
+
+        </small>
+
+      </div>
+
+
+
+      <!-- ==============================
+           DESCRIPTION
+      =============================== -->
+
+      <div class="form-group">
+
+        <label>
+
+          Description
+          <span>*</span>
+
+        </label>
+
+        <textarea
+          rows="4"
+          [(ngModel)]="newProduct.description"
+          placeholder="Write a description for your product..."
+        ></textarea>
+
+      </div>
+
+
+
+      <!-- ==============================
+           BEST SELLER
+      =============================== -->
+
+      <div class="best-seller-box">
+
+        <div class="best-seller-info">
+
+          <div class="best-seller-icon">
+
+            <i class="bi bi-star"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Best Seller
+            </strong>
+
+            <p>
+              Mark this product as a best seller
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <label class="switch">
+
+          <input
+            type="checkbox"
+            [(ngModel)]="newProduct.isBestSeller"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ==============================
+         MODAL FOOTER
+    =============================== -->
+
+    <div class="modal-footer">
+
+      <button
+        class="cancel-btn"
+        type="button"
+        (click)="closeAddProductModal()">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        class="save-btn"
+        type="button"
+        (click)="addProduct()">
+
+        <i
+          class="bi"
+
+          [class.bi-plus-lg]="
+            !editingProduct
+          "
+
+          [class.bi-check-lg]="
+            editingProduct
+          ">
+
+        </i>
+
+
+        {{
+          editingProduct
+            ? 'Update Product'
+            : 'Add Product'
+        }}
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>

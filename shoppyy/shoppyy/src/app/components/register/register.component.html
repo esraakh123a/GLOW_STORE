@@ -1,0 +1,133 @@
+
+
+
+<div
+  *ngIf="successMessage"
+  class="alert alert-success"
+>
+  {{ successMessage }}
+</div>
+
+<div
+  *ngIf="errorMessage"
+  class="alert alert-danger"
+>
+  {{ errorMessage }}
+</div><div class="register-page">
+
+  <div class="register-container">
+
+    <!-- Left Side -->
+    <div class="register-image">
+
+  <img
+    src="assets/images/744bded67f90894c3fd8f3bd73c237d2.jpg"
+    alt="Shopping"
+  >
+
+  <div class="overlay">
+
+    <h2>Create Account!</h2>
+
+    <p>
+      Create your account and start shopping
+      with GLOW Store.
+    </p>
+
+  </div>
+
+</div>
+
+
+    <!-- Right Side -->
+    <div class="register-form">
+
+      <div class="form-header">
+
+        <h1>Create Account</h1>
+
+        <p>
+          Please enter your details to register
+        </p>
+
+      </div>
+
+
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+      >
+
+        <!-- Name -->
+        <div class="form-group">
+
+          <label>Name</label>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your name"
+            formControlName="name"
+          >
+
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+
+          <label>Email</label>
+
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Enter your email"
+            formControlName="email"
+          >
+
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Enter your password"
+            formControlName="password"
+          >
+
+        </div>
+
+
+       <button
+  type="submit"
+  class="register-submit"
+  [disabled]="isLoading"
+>
+
+  {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+
+</button>
+
+        <!-- Login -->
+        <p class="login-text">
+
+          Already have an account?
+
+          <a routerLink="/login">
+            Login
+          </a>
+
+        </p>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

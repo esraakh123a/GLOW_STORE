@@ -1,0 +1,505 @@
+
+<div class="admin-messages-page">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Messages</h1>
+      <p>Manage messages sent by your customers</p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      (click)="refreshMessages()">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+    </button>
+
+  </div>
+
+
+  <!-- ================= STATS ================= -->
+
+  <div class="stats-grid">
+
+    <!-- Total -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-envelope"></i>
+      </div>
+
+      <div>
+        <span>Total Messages</span>
+        <h2>{{ getTotalMessages() }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Unread -->
+
+    <div class="stat-card unread-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-envelope-exclamation"></i>
+      </div>
+
+      <div>
+        <span>Unread Messages</span>
+        <h2>{{ getUnreadMessages() }}</h2>
+      </div>
+
+    </div>
+
+
+    <!-- Today -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        <i class="bi bi-calendar-event"></i>
+      </div>
+
+      <div>
+        <span>Today</span>
+        <h2>{{ getTodayMessages() }}</h2>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= TOOLBAR ================= -->
+
+  <div class="toolbar">
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+      <i class="bi bi-search"></i>
+
+      <input
+        type="text"
+        placeholder="Search by name, email or subject..."
+        [(ngModel)]="searchTerm"
+        (input)="searchMessages()"
+      />
+
+    </div>
+
+
+    <!-- Filters -->
+
+    <div class="filters">
+
+      <button
+        [class.active]="activeFilter === 'all'"
+        (click)="setFilter('all')">
+
+        All
+
+      </button>
+
+      <button
+        [class.active]="activeFilter === 'unread'"
+        (click)="setFilter('unread')">
+
+        Unread
+
+        <span class="filter-count">
+          {{ getUnreadMessages() }}
+        </span>
+
+      </button>
+
+      <button
+        [class.active]="activeFilter === 'read'"
+        (click)="setFilter('read')">
+
+        Read
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= LOADING ================= -->
+
+  <div
+    class="state-box"
+    *ngIf="loading">
+
+    <div class="spinner"></div>
+
+    <p>Loading messages...</p>
+
+  </div>
+
+
+  <!-- ================= ERROR ================= -->
+
+  <div
+    class="state-box error-state"
+    *ngIf="!loading && errorMessage">
+
+    <i class="bi bi-exclamation-circle"></i>
+
+    <p>{{ errorMessage }}</p>
+
+    <button
+      class="retry-btn"
+      (click)="refreshMessages()">
+
+      Try Again
+
+    </button>
+
+  </div>
+
+
+  <!-- ================= EMPTY ================= -->
+
+  <div
+    class="state-box"
+    *ngIf="
+      !loading &&
+      !errorMessage &&
+      filteredMessages.length === 0
+    ">
+
+    <i class="bi bi-envelope-open"></i>
+
+    <h3>No Messages Found</h3>
+
+    <p>
+      There are no messages matching your search.
+    </p>
+
+  </div>
+
+
+  <!-- ================= TABLE ================= -->
+
+  <div
+    class="messages-card"
+    *ngIf="
+      !loading &&
+      !errorMessage &&
+      filteredMessages.length > 0
+    ">
+
+    <div class="table-header">
+
+      <div>
+        <h3>Customer Messages</h3>
+
+        <span>
+          {{ filteredMessages.length }} message(s)
+        </span>
+      </div>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Customer</th>
+
+            <th>Subject</th>
+
+            <th>Message</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let message of filteredMessages"
+            [class.unread-row]="message.status === 'unread'">
+
+
+            <!-- CUSTOMER -->
+
+            <td>
+
+              <div class="customer-info">
+
+                <div class="avatar">
+
+                  {{ getCustomerInitial(message.name) }}
+
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ message.name }}
+                  </strong>
+
+                  <span>
+                    {{ message.email }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- SUBJECT -->
+
+            <td>
+
+              <div class="subject-cell">
+
+                <strong>
+                  {{ message.subject }}
+                </strong>
+
+              </div>
+
+            </td>
+
+
+            <!-- MESSAGE -->
+
+            <td>
+
+              <p class="message-preview">
+
+                {{ getShortMessage(message.message) }}
+
+              </p>
+
+            </td>
+
+
+            <!-- DATE -->
+
+            <td>
+
+              <div class="date-cell">
+
+                <strong>
+                  {{ formatDate(message.createdAt) }}
+                </strong>
+
+                <span>
+                  {{ formatTime(message.createdAt) }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.unread]="message.status === 'unread'"
+                [class.read]="message.status === 'read'">
+
+                <i
+                  class="bi"
+                  [class.bi-envelope-fill]="message.status === 'unread'"
+                  [class.bi-envelope-open-fill]="message.status === 'read'">
+                </i>
+
+                {{ message.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- ACTION -->
+
+            <td>
+
+              <button
+                class="view-btn"
+                (click)="openMessage(message)">
+
+                <i class="bi bi-eye"></i>
+
+                View
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= MESSAGE MODAL ================= -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showMessageModal"
+    (click)="closeMessage()">
+
+
+    <div
+      class="message-modal"
+      (click)="$event.stopPropagation()">
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="modal-header">
+
+        <div>
+
+          <span class="modal-label">
+            Customer Message
+          </span>
+
+          <h2>
+            {{ selectedMessage?.subject }}
+          </h2>
+
+        </div>
+
+
+        <button
+          class="close-btn"
+          (click)="closeMessage()">
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- CUSTOMER -->
+
+      <div class="modal-customer">
+
+        <div class="large-avatar">
+
+          {{ getCustomerInitial(selectedMessage?.name) }}
+
+        </div>
+
+        <div>
+
+          <strong>
+            {{ selectedMessage?.name }}
+          </strong>
+
+          <a
+            [href]="'mailto:' + selectedMessage?.email">
+
+            {{ selectedMessage?.email }}
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- DATE -->
+
+      <div class="message-meta">
+
+        <span>
+          <i class="bi bi-calendar3"></i>
+
+          {{ formatDate(selectedMessage?.createdAt) }}
+
+        </span>
+
+        <span>
+          <i class="bi bi-clock"></i>
+
+          {{ formatTime(selectedMessage?.createdAt) }}
+
+        </span>
+
+      </div>
+
+
+      <!-- MESSAGE -->
+
+      <div class="full-message">
+
+        <label>Message</label>
+
+        <p>
+          {{ selectedMessage?.message }}
+        </p>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer">
+
+        <span
+          class="status-badge"
+          [class.unread]="selectedMessage?.status === 'unread'"
+          [class.read]="selectedMessage?.status === 'read'">
+
+          <i class="bi bi-check2-circle"></i>
+
+          {{ selectedMessage?.status }}
+
+        </span>
+
+
+        <button
+          class="done-btn"
+          (click)="closeMessage()">
+
+          Done
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

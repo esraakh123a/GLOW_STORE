@@ -1,0 +1,217 @@
+
+<div class="product-details-page">
+
+  <div class="container">
+<!-- Breadcrumb -->
+<div class="breadcrumb-custom">
+
+  <a routerLink="/home">
+    Home
+  </a>
+
+  <span>/</span>
+
+  <a routerLink="/products">
+    Products
+  </a>
+
+  <span>/</span>
+
+  <span>
+    {{ product?.name }}
+  </span>
+
+</div>
+
+
+    <div class="row align-items-center product-details">
+
+      <!-- Product Image -->
+      <div class="col-lg-6">
+
+        <div class="product-image-box">
+
+          <!-- Discount -->
+          <span
+            class="discount-badge"
+            *ngIf="product?.discount">
+
+            {{ product.discount }}% OFF
+
+          </span>
+
+          <!-- Best Seller -->
+          <span
+            class="best-seller"
+            *ngIf="product?.isBestSeller">
+
+            Best Seller
+
+          </span>
+
+          <!-- Product Image -->
+          <img
+            *ngIf="product"
+            [src]="getImageUrl(product.image)"
+            [alt]="product.name">
+
+        </div>
+
+      </div>
+
+
+      <!-- Product Info -->
+      <div class="col-lg-6">
+
+        <div class="product-info">
+
+          <!-- Favorite - User Only -->
+          <button
+            *ngIf="!isAdmin"
+            type="button"
+            class="favorite-btn"
+            [class.active]="isFavorite"
+            (click)="toggleFavorite()">
+
+            <span *ngIf="!isFavorite">
+              ♡
+            </span>
+
+            <span *ngIf="isFavorite">
+              ♥
+            </span>
+
+          </button>
+
+
+          <!-- Category -->
+          <span class="category">
+            {{ product?.category }}
+          </span>
+
+
+          <!-- Product Name -->
+          <h1>
+            {{ product?.name }}
+          </h1>
+
+
+          <!-- Description -->
+          <p class="description">
+            {{ product?.description }}
+          </p>
+
+
+          <!-- Price -->
+          <div class="price-section">
+
+            <!-- Old Price -->
+            <span
+              class="old-price"
+              *ngIf="product?.discount">
+
+              {{ product?.price }} EGP
+
+            </span>
+
+            <!-- Final Price -->
+            <span class="final-price">
+
+              {{ finalPrice }} EGP
+
+            </span>
+
+            <!-- Saving -->
+            <span
+              class="save-price"
+              *ngIf="product?.discount">
+
+              Save {{ product.price - finalPrice }} EGP
+
+            </span>
+
+          </div>
+
+
+          <!-- Stock -->
+          <div class="stock">
+
+            <span class="stock-dot"></span>
+
+            <span *ngIf="product?.stock > 0">
+
+              {{ product.stock }} items available
+
+            </span>
+
+            <span *ngIf="product?.stock === 0">
+
+              Out of stock
+
+            </span>
+
+          </div>
+
+
+          <!-- Quantity - User Only -->
+          <div
+            class="quantity-section"
+            *ngIf="!isAdmin">
+
+            <span class="quantity-label">
+              Quantity
+            </span>
+
+            <div class="quantity-control">
+
+              <!-- Decrease -->
+              <button
+                type="button"
+                (click)="decreaseQuantity()"
+                [disabled]="quantity === 1">
+
+                −
+
+              </button>
+
+              <!-- Quantity Number -->
+              <span>
+                {{ quantity }}
+              </span>
+
+              <!-- Increase -->
+              <button
+                type="button"
+                (click)="increaseQuantity()"
+                [disabled]="product && quantity >= product.stock">
+
+                +
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- Add To Cart - User Only -->
+          <button
+            *ngIf="!isAdmin"
+            class="add-cart-btn"
+            [disabled]="product?.stock === 0"
+            (click)="addToCart()">
+
+            🛒 Add To Cart
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

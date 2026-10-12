@@ -1,0 +1,299 @@
+<app-hero></app-hero>
+
+<!-- ================================
+     INTRO
+================================= -->
+<section class="intro">
+  <h1>Welcome to Glow Store </h1>
+  <p>Skincare chosen with care, for skin that feels as good as it looks.</p>
+</section>
+
+
+<!-- ================================
+     FEATURED PRODUCTS
+================================= -->
+<!-- FEATURED PRODUCTS -->
+<section class="featured-products">
+  <div class="container">
+
+    <div class="section-head">
+      <div class="section-title">
+        <span class="section-subtitle">Our collection</span>
+        <h2>Featured products</h2>
+        <p>
+          Our best-selling skincare, carefully selected
+          for your daily beauty routine.
+        </p>
+      </div>
+
+      <a routerLink="/products" class="text-link">
+        View all products
+      </a>
+    </div>
+
+    <div class="products-container">
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-4">
+        Loading products...
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="!loading && errorMessage" class="text-center py-4">
+        <p>{{ errorMessage }}</p>
+
+        <button type="button" (click)="loadProducts()">
+          Try again
+        </button>
+      </div>
+
+      <!-- Products from MongoDB -->
+      <ng-container *ngIf="!loading && !errorMessage">
+
+        <article
+          class="product-card"
+          *ngFor="let product of products"
+          (click)="openProduct(product._id)"
+          style="cursor: pointer;"
+        >
+
+          <div class="product-image">
+
+            <span
+              class="product-badge"
+              *ngIf="product.isBestSeller"
+            >
+              Best seller
+            </span>
+
+            <span
+              class="product-badge"
+              *ngIf="!product.isBestSeller && product.discount > 0"
+            >
+              {{ product.discount }}% OFF
+            </span>
+
+            <img
+              [src]="getImageUrl(product.image)"
+              [alt]="product.name"
+              loading="lazy"
+            >
+
+          </div>
+
+          <div class="product-info">
+
+            <span class="product-category">
+              {{ product.category }}
+            </span>
+
+            <h3>{{ product.name }}</h3>
+
+            <div class="product-bottom">
+
+              <div class="price">
+                <del *ngIf="product.discount > 0">
+                  {{ product.price }} EGP
+                </del>
+
+                <span>
+                  {{ getFinalPrice(product) }} EGP
+                </span>
+              </div>
+
+              <button
+                type="button"
+                class="add-cart-btn"
+                [disabled]="product.stock <= 0"
+                (click)="addToCart($event, product)"
+              >
+                {{
+                  product.stock > 0
+                    ? 'Add to cart'
+                    : 'Out of stock'
+                }}
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+        <p
+          *ngIf="products.length === 0"
+          class="text-center py-4"
+        >
+          No products available right now.
+        </p>
+
+      </ng-container>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================
+     CATEGORIES
+================================= -->
+<section class="categories">
+  <div class="container">
+
+    <div class="section-head">
+      <div class="section-title">
+        <span class="section-subtitle">Explore our collection</span>
+        <h2>Shop by category</h2>
+        <p>Find everything you need for your perfect skincare routine.</p>
+      </div>
+    </div>
+
+    <div class="categories-container">
+
+      <a routerLink="/products" class="category-tile category-tile--tall">
+        <img
+          src="assets/images/960867b431435f0be2610cfb74316a4e.jpg"
+          alt=""
+        >
+        <div class="category-info">
+          <h3>HairCare</h3>
+          <p>Complete hair care products</p>
+          <span class=""></span>
+        </div>
+      </a>
+
+      <a routerLink="/products" class="category-tile">
+        <img
+          src="assets/images/Screenshot 2026-07-25 010800.png"
+          alt=""
+        >
+        <div class="category-info">
+          <h3>Cleansers</h3>
+          <p>Gentle cleansing products</p>
+          <span class=""></span>
+        </div>
+      </a>
+
+      <a routerLink="/products" class="category-tile">
+        <img
+          src="assets/images/etat-pur-014130xp-1.webp"
+          alt=""
+        >
+        <div class="category-info">
+          <h3>Moisturizers</h3>
+          <p>Hydrate and protect your skin</p>
+          <span class=""></span>
+        </div>
+      </a>
+
+      <a routerLink="/products" class="category-tile">
+        <img
+          src="assets/images/images.jpg"
+          alt=""
+        >
+        <div class="category-info">
+          <h3>Sunscreen</h3>
+          <p>Protect your skin every day</p>
+          <span class=""></span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================
+     ABOUT
+================================= -->
+<section class="about-section">
+  <div class="container about-container">
+
+    <div class="about-image">
+      <div class="about-image-bg"></div>
+      <img
+        src="assets/images/21a7f0ef9fe0a0f02de72fa130cdd7c6.jpg"
+        alt="Skincare products from our store"
+      >
+    </div>
+
+    <div class="about-content">
+      <span class="section-subtitle">About our store</span>
+
+      <h2>Beauty begins with healthy skin</h2>
+
+      <p>
+        We believe that skincare is more than just a beauty routine.
+        It is a way to take care of yourself and feel confident every day.
+      </p>
+
+      <p>
+        Our mission is to provide you with carefully selected,
+        high-quality skincare products that help you achieve
+        healthy, glowing, and beautiful skin.
+      </p>
+
+      <ul class="about-features">
+        <li class="about-feature">
+          <span class="about-icon" aria-hidden="true">✓</span>
+          <div>
+            <strong>Quality products</strong>
+            <small>Carefully selected for you</small>
+          </div>
+        </li>
+
+        <li class="about-feature">
+          <span class="about-icon" aria-hidden="true">♡</span>
+          <div>
+            <strong>Made with care</strong>
+            <small>Because your skin matters</small>
+          </div>
+        </li>
+      </ul>
+
+      <div class="about-actions">
+        <a routerLink="/about" class="btn btn-primary">Discover more</a>
+        <a routerLink="/content" class="btn btn-ghost">Explore content</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================================
+     OFFERS
+================================= -->
+<section class="offers-section">
+  <div class="container">
+    <div class="offers-panel">
+
+      <div class="offers-content">
+        <span class="offers-subtitle">✨ Special offer</span>
+
+        <h2>Glow more, pay less</h2>
+
+        <p>
+          Enjoy exclusive discounts on our selected skincare products
+          and give your skin the care it deserves.
+        </p>
+
+        <div class="offer-discount">
+          <strong>20%</strong>
+          <span>off selected products</span>
+        </div>
+
+        <a routerLink="/products" class="btn btn-primary">Shop now</a>
+      </div>
+
+      <div class="offers-image">
+        <div class="offers-circle"></div>
+        <img
+          src="assets/images/118ed7dbcc9ba35efd015f1bada6429d.jpg"
+          alt="Skincare products on special offer"
+        >
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,737 @@
+<div class="orders-page">
+
+  <!-- ========================================= -->
+  <!-- HEADER -->
+  <!-- ========================================= -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>Orders</h1>
+
+      <p>
+        Manage and track customer orders
+      </p>
+
+    </div>
+
+
+    <button
+      class="refresh-btn"
+      (click)="loadOrders()">
+
+      <i class="bi bi-arrow-clockwise"></i>
+
+      Refresh
+
+    </button>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- ERROR -->
+  <!-- ========================================= -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    <i class="bi bi-exclamation-circle"></i>
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- STATISTICS -->
+  <!-- ========================================= -->
+
+  <div
+    class="stats-grid"
+    *ngIf="!loading">
+
+
+    <!-- TOTAL -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon total-icon">
+        <i class="bi bi-bag"></i>
+      </div>
+
+      <div class="stat-info">
+
+        <span>Total Orders</span>
+
+        <strong>
+          {{ orders.length }}
+        </strong>
+
+        <small>
+          All time
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- THIS MONTH -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon month-icon">
+        <i class="bi bi-calendar3"></i>
+      </div>
+
+      <div class="stat-info">
+
+        <span>This Month</span>
+
+        <strong>
+          {{ getThisMonthOrdersCount() }}
+        </strong>
+
+        <small
+          [class.increase]="getMonthlyChange() > 0"
+          [class.decrease]="getMonthlyChange() < 0">
+
+          <i
+            class="bi"
+            [ngClass]="
+              getMonthlyChange() >= 0
+                ? 'bi-arrow-up'
+                : 'bi-arrow-down'
+            ">
+          </i>
+
+          {{ getMonthlyChange() }}%
+
+          vs last month
+
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div class="stat-card attention-card">
+
+      <div class="stat-icon pending-icon">
+
+        <i class="bi bi-clock"></i>
+
+      </div>
+
+      <div class="stat-info">
+
+        <span>Pending</span>
+
+        <strong>
+          {{ getPendingOrdersCount() }}
+        </strong>
+
+        <small>
+          Needs attention
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- DELIVERED -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon delivered-icon">
+
+        <i class="bi bi-check-circle"></i>
+
+      </div>
+
+      <div class="stat-info">
+
+        <span>Delivered</span>
+
+        <strong>
+          {{ getDeliveredOrdersCount() }}
+        </strong>
+
+        <small>
+          Completed
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- CANCELLED -->
+
+    <div class="stat-card">
+
+      <div class="stat-icon cancelled-icon">
+
+        <i class="bi bi-x-circle"></i>
+
+      </div>
+
+      <div class="stat-info">
+
+        <span>Cancelled</span>
+
+        <strong>
+          {{ getCancelledOrdersCount() }}
+        </strong>
+
+        <small>
+          All time
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- LOADING -->
+  <!-- ========================================= -->
+
+  <div
+    class="loading-container"
+    *ngIf="loading">
+
+    <div class="spinner"></div>
+
+    <p>
+      Loading orders...
+    </p>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- ORDERS CARD -->
+  <!-- ========================================= -->
+
+  <div
+    class="orders-card"
+    *ngIf="!loading">
+
+
+    <!-- CARD HEADER -->
+
+    <div class="orders-card-header">
+
+      <div>
+
+        <h2>Order Management</h2>
+
+        <p>
+          Manage your active orders
+        </p>
+
+      </div>
+
+
+      <div class="orders-count">
+
+        {{ filteredOrders.length }}
+
+        orders
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- FILTERS -->
+    <!-- ========================================= -->
+
+    <div class="order-filters">
+
+      <button
+        [class.active]="activeFilter === 'active'"
+        (click)="setFilter('active')">
+
+        <i class="bi bi-lightning"></i>
+
+        Active
+
+        <span>
+          {{ getActiveOrdersCount() }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'all'"
+        (click)="setFilter('all')">
+
+        All
+
+        <span>
+          {{ orders.length }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'pending'"
+        (click)="setFilter('pending')">
+
+        Pending
+
+        <span>
+          {{ getPendingOrdersCount() }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'confirmed'"
+        (click)="setFilter('confirmed')">
+
+        Confirmed
+
+        <span>
+          {{ getConfirmedOrdersCount() }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'shipped'"
+        (click)="setFilter('shipped')">
+
+        Shipped
+
+        <span>
+          {{ getShippedOrdersCount() }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'delivered'"
+        (click)="setFilter('delivered')">
+
+        Delivered
+
+        <span>
+          {{ getDeliveredOrdersCount() }}
+        </span>
+
+      </button>
+
+
+      <button
+        [class.active]="activeFilter === 'cancelled'"
+        (click)="setFilter('cancelled')">
+
+        Cancelled
+
+        <span>
+          {{ getCancelledOrdersCount() }}
+        </span>
+
+      </button>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- EMPTY -->
+    <!-- ========================================= -->
+
+    <div
+      class="empty-state"
+      *ngIf="filteredOrders.length === 0">
+
+      <div class="empty-icon">
+
+        <i
+          class="bi"
+          [ngClass]="
+            activeFilter === 'active'
+              ? 'bi-check2-circle'
+              : 'bi-inbox'
+          ">
+        </i>
+
+      </div>
+
+
+      <h3>
+
+        {{
+          activeFilter === 'active'
+            ? 'All caught up!'
+            : 'No Orders Found'
+        }}
+
+      </h3>
+
+
+      <p>
+
+        {{
+          activeFilter === 'active'
+            ? 'There are no active orders that need your attention.'
+            : 'No orders match this filter.'
+        }}
+
+      </p>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- TABLE -->
+    <!-- ========================================= -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="filteredOrders.length > 0">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Order</th>
+
+            <th>Customer</th>
+
+            <th>Products</th>
+
+            <th>Total</th>
+
+            <th>Payment</th>
+
+            <th>Date</th>
+
+            <th>Status</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let order of filteredOrders
+            ">
+
+
+            <!-- ORDER -->
+
+            <td>
+
+              <div class="order-id">
+
+                <span class="order-number">
+
+                  #{{ order._id | slice:0:8 }}
+
+                </span>
+
+                <span class="order-full-id">
+
+                  {{ order._id }}
+
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- CUSTOMER -->
+
+            <td>
+
+              <div class="customer-info">
+
+                <div class="customer-avatar">
+
+                  {{
+                    (
+                      order.customerName ||
+                      order.user?.name ||
+                      'C'
+                    ).charAt(0).toUpperCase()
+                  }}
+
+                </div>
+
+
+                <div>
+
+                  <strong>
+
+                    {{
+                      order.customerName ||
+                      order.user?.name ||
+                      'Unknown Customer'
+                    }}
+
+                  </strong>
+
+
+                  <span>
+
+                    {{
+                      order.phone ||
+                      'No phone'
+                    }}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- PRODUCTS -->
+
+            <td>
+
+              <div class="products-list">
+
+                <div
+                  class="product-item"
+                  *ngFor="
+                    let item of getDisplayProducts(order)
+                  ">
+
+
+                  <div
+                    class="product-image-wrapper">
+
+                    <img
+                      *ngIf="
+                        getProductImage(item)
+                      "
+                      [src]="
+                        getImageUrl(getProductImage(item))
+                      "
+                      [alt]="
+                        getProductName(item)
+                      "
+                      class="product-image"
+                    />
+
+
+                    <div
+                      *ngIf="
+                        !getProductImage(item)
+                      "
+                      class="product-image-placeholder">
+
+                      <i class="bi bi-bag"></i>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="product-info">
+
+                    <strong
+                      class="product-name">
+
+                      {{ getProductName(item) }}
+
+                    </strong>
+
+
+                    <span
+                      class="product-quantity">
+
+                      Qty: {{ item.quantity }}
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div
+                  class="more-products"
+                  *ngIf="
+                    order.items?.length > 2
+                  ">
+
+                  +
+                  {{ order.items.length - 2 }}
+                  more
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- TOTAL -->
+
+            <td>
+
+              <strong class="order-total">
+
+                {{ order.totalPrice | number:'1.0-2' }}
+
+                <span>
+                  EGP
+                </span>
+
+              </strong>
+
+            </td>
+
+
+            <!-- PAYMENT -->
+
+            <td>
+
+              <span
+                class="payment-badge"
+                [class.card-payment]="
+                  order.paymentMethod === 'card'
+                "
+                [class.cash-payment]="
+                  order.paymentMethod === 'cash'
+                ">
+
+
+                <i
+                  class="bi"
+                  [ngClass]="
+                    order.paymentMethod === 'card'
+                      ? 'bi-credit-card'
+                      : 'bi-cash'
+                  ">
+                </i>
+
+
+                {{
+                  order.paymentMethod === 'card'
+                    ? 'Card'
+                    : 'Cash'
+                }}
+
+              </span>
+
+            </td>
+
+
+            <!-- DATE -->
+
+            <td>
+
+              <div class="date-info">
+
+                <strong>
+
+                  {{ formatDate(order.createdAt) }}
+
+                </strong>
+
+
+                <span>
+
+                  {{
+                    order.createdAt
+                      | date:'shortTime'
+                  }}
+
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+              <select
+                class="status-select"
+                [ngClass]="
+                  getStatusClass(
+                    order.orderStatus
+                  )
+                "
+                [value]="
+                  order.orderStatus
+                "
+                (change)="
+                  updateStatus(
+                    order._id,
+                    $any($event.target).value
+                  )
+                ">
+
+
+                <option value="pending">
+                  Pending
+                </option>
+
+
+                <option value="confirmed">
+                  Confirmed
+                </option>
+
+
+                <option value="shipped">
+                  Shipped
+                </option>
+
+
+                <option value="delivered">
+                  Delivered
+                </option>
+
+
+                <option value="cancelled">
+                  Cancelled
+                </option>
+
+              </select>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,19 @@
+
+# Secrets
+.env
+**/.env
+
+# Dependencies
+**/node_modules/
+
+# Angular build files
+**/dist/
+**/.angular/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db

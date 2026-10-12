@@ -1,0 +1,351 @@
+<div class="checkout-page">
+
+  <div class="container">
+
+    <!-- ===============================
+         Header
+    ================================ -->
+
+    <div class="checkout-header">
+
+      <span class="small-title">
+        CHECKOUT
+      </span>
+
+      <h1>
+        Complete Your Order
+      </h1>
+
+      <p>
+        Enter your information to confirm your order
+      </p>
+
+    </div>
+
+
+    <!-- ===============================
+         Loading
+    ================================ -->
+
+    <div
+      class="loading"
+      *ngIf="loading">
+
+      Loading checkout...
+
+    </div>
+
+
+    <!-- ===============================
+         Checkout
+    ================================ -->
+
+    <div
+      class="row g-4"
+      *ngIf="!loading && cart?.items?.length > 0">
+
+
+      <!-- ===============================
+           Customer Form
+      ================================ -->
+
+      <div class="col-lg-7">
+
+        <div class="checkout-card">
+
+          <h2>
+            Customer Information
+          </h2>
+
+          <p class="card-subtitle">
+            Please enter your information to complete the order
+          </p>
+
+
+          <!-- Full Name -->
+
+          <div class="form-group">
+
+            <label>
+              Full Name *
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="customerName"
+              placeholder="Enter your full name">
+
+          </div>
+
+
+          <!-- Phone -->
+
+          <div class="form-group">
+
+            <label>
+              Phone Number *
+            </label>
+
+            <input
+              type="tel"
+              class="form-control"
+              [(ngModel)]="phone"
+              placeholder="Enter your phone number">
+
+          </div>
+
+
+          <!-- Alternative Phone -->
+
+          <div class="form-group">
+
+            <label>
+              Alternative Phone
+            </label>
+
+            <input
+              type="tel"
+              class="form-control"
+              [(ngModel)]="alternativePhone"
+              placeholder="Enter alternative phone number">
+
+          </div>
+
+
+          <!-- Address -->
+
+          <div class="form-group">
+
+            <label>
+              Address *
+            </label>
+
+            <textarea
+              class="form-control"
+              rows="3"
+              [(ngModel)]="address"
+              placeholder="Enter your full address">
+            </textarea>
+
+          </div>
+
+
+          <!-- Payment -->
+
+          <div class="payment-section">
+
+            <h3>
+              Payment Method
+            </h3>
+
+
+            <div class="payment-option">
+
+              <input
+                type="radio"
+                name="payment"
+                value="cash"
+                [(ngModel)]="paymentMethod">
+
+              <div>
+
+                <strong>
+                  Cash on Delivery
+                </strong>
+
+                <p>
+                  Pay when your order arrives
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+      <!-- ===============================
+           Order Summary
+      ================================ -->
+
+      <div class="col-lg-5">
+
+        <div class="order-summary">
+
+          <h2>
+            Your Order
+          </h2>
+
+
+          <!-- Products -->
+
+          <div
+            class="order-item"
+            *ngFor="let item of cart.items">
+
+
+            <!-- Product Image -->
+
+            <div class="order-image">
+
+              <img
+                [src]="getImageUrl(item.product?.image)"
+                [alt]="item.product?.name">
+
+            </div>
+
+
+            <!-- Product Info -->
+
+            <div class="order-info">
+
+              <h3>
+                {{ item.product?.name }}
+              </h3>
+
+              <span>
+                Quantity: {{ item.quantity }}
+              </span>
+
+            </div>
+
+
+            <!-- Item Total -->
+
+            <strong>
+              {{ item.itemTotal }} EGP
+            </strong>
+
+          </div>
+
+
+          <!-- Divider -->
+
+          <div class="summary-divider"></div>
+
+
+          <!-- Subtotal -->
+
+          <div class="summary-line">
+
+            <span>
+              Subtotal
+            </span>
+
+            <span>
+              {{ cart.totalPrice }} EGP
+            </span>
+
+          </div>
+
+
+          <!-- Shipping -->
+
+          <div class="summary-line">
+
+            <span>
+              Shipping
+            </span>
+
+            <span>
+              To be confirmed
+            </span>
+
+          </div>
+
+
+          <!-- Divider -->
+
+          <div class="summary-divider"></div>
+
+
+          <!-- Total -->
+
+          <div class="total-line">
+
+            <span>
+              Total
+            </span>
+
+            <strong>
+              {{ cart.totalPrice }} EGP
+            </strong>
+
+          </div>
+
+
+          <!-- ===============================
+               Place Order
+          ================================ -->
+
+          <button
+            type="button"
+            class="place-order-btn"
+            (click)="placeOrder()"
+            [disabled]="placingOrder">
+
+            <span *ngIf="!placingOrder">
+              Confirm Order
+            </span>
+
+            <span *ngIf="placingOrder">
+              Processing...
+            </span>
+
+          </button>
+
+
+          <p class="secure-text">
+
+            🔒 Your information is secure
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- ===============================
+         Empty Cart
+    ================================ -->
+
+    <div
+      class="empty-checkout"
+      *ngIf="!loading && (!cart || !cart.items?.length)">
+
+      <div class="empty-icon">
+        🛍️
+      </div>
+
+      <h2>
+        Your Cart is Empty
+      </h2>
+
+      <p>
+        Please add products before checkout.
+      </p>
+
+      <button
+        class="continue-btn"
+        routerLink="/products">
+
+        Continue Shopping
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>

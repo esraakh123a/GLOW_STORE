@@ -1,0 +1,385 @@
+
+<nav class="navbar">
+  <div class="container">
+
+    <!-- ================= LOGO ================= -->
+
+    <a class="logo" routerLink="/home">
+      <span class="logo-icon">✦</span>
+      <span>Glow Store</span>
+    </a>
+
+
+    <!-- ================= DESKTOP MENU ================= -->
+
+    <ul class="nav-links">
+
+      <li>
+        <a
+          routerLink="/home"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Home
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/products"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Products
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/about"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          About
+        </a>
+      </li>
+
+      <li>
+        <a
+          routerLink="/contact"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Contact
+        </a>
+      </li>
+
+    </ul>
+
+
+    <!-- ================= ACTIONS ================= -->
+
+    <div class="nav-actions">
+
+
+      <!-- ================= SEARCH ================= -->
+
+      <div class="nav-search">
+
+        <button
+          class="icon-btn"
+          type="button"
+          (click)="$event.stopPropagation(); toggleSearch()"
+          aria-label="Search">
+
+          🔍
+
+        </button>
+
+
+        <!-- Search Box -->
+
+        <div
+          class="search-box"
+          *ngIf="isSearchOpen"
+          (click)="$event.stopPropagation()">
+
+          <input
+            type="text"
+            class="search-input"
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            placeholder="Search products..."
+            autofocus>
+
+
+          <!-- Results -->
+
+          <div
+            class="search-results"
+            *ngIf="searchTerm.trim()">
+
+            <div
+              class="search-result"
+              *ngFor="let product of searchResults"
+              (click)="goToProduct(product._id)">
+
+              <img
+                [src]="product.image"
+                [alt]="product.name">
+
+              <div class="search-result-info">
+
+                <h4>
+                  {{ product.name }}
+                </h4>
+
+                <span>
+                  {{ product.finalPrice || product.price }} EGP
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- No Result -->
+
+            <div
+              class="no-results"
+              *ngIf="searchResults.length === 0">
+
+              No product found ❤️
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= CART ================= -->
+      <!-- يظهر للمستخدم العادي فقط -->
+
+      <a
+        *ngIf="!isAdmin"
+        routerLink="/cart"
+        class="cart-btn">
+
+        🛒
+
+        <span
+          class="cart-count"
+          *ngIf="cartCount > 0">
+
+          {{ cartCount }}
+
+        </span>
+
+      </a>
+
+
+      <!-- ================= FAVORITES ================= -->
+      <!-- يظهر للمستخدم العادي فقط -->
+
+      <a
+        *ngIf="!isAdmin"
+        routerLink="/favorite"
+        class="favorite-btn"
+        aria-label="Favorites">
+
+        ♡
+
+        <span
+          class="favorite-count"
+          *ngIf="favoriteCount > 0">
+
+          {{ favoriteCount }}
+
+        </span>
+
+      </a>
+
+
+      <!-- ================= LOGIN ================= -->
+
+      <a
+        *ngIf="!isLoggedIn"
+        routerLink="/login"
+        class="login-btn">
+
+        Login
+
+      </a>
+
+
+      <!-- ================= ACCOUNT ================= -->
+
+      <div
+        class="profile-wrapper"
+        *ngIf="isLoggedIn">
+
+
+        <!-- Account Button -->
+
+        <button
+          class="profile-btn"
+          type="button"
+          (click)="$event.stopPropagation(); toggleProfile()"
+          aria-label="Account">
+
+          👤
+
+        </button>
+
+
+        <!-- Account Dropdown -->
+
+        <div
+          class="profile-dropdown"
+          *ngIf="isProfileOpen"
+          (click)="$event.stopPropagation()">
+
+
+          <!-- ================= ADMIN ================= -->
+<ng-container *ngIf="isAdmin">
+
+  <button
+    type="button"
+    class="dropdown-item"
+    (click)="goToDashboard()">
+
+    📊 &nbsp; Dashboard
+
+  </button>
+
+</ng-container>
+
+
+          <!-- ================= USER ================= -->
+
+          <ng-container *ngIf="!isAdmin">
+
+            <div class="profile-name">
+              My Account
+            </div>
+
+          </ng-container>
+
+
+          <div class="dropdown-divider"></div>
+
+
+          <!-- Logout -->
+
+          <button
+            type="button"
+            class="dropdown-item logout-item"
+            (click)="logout()">
+
+            🚪 &nbsp; Logout
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= MOBILE MENU BUTTON ================= -->
+
+      <button
+        class="menu-btn"
+        (click)="toggleMenu()"
+        aria-label="Toggle menu">
+
+        ☰
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= MOBILE MENU ================= -->
+
+  <div
+    class="mobile-menu"
+    [class.open]="isMenuOpen">
+
+
+    <a
+      routerLink="/home"
+      (click)="closeMenu()">
+
+      Home
+
+    </a>
+
+
+    <a
+      routerLink="/products"
+      (click)="closeMenu()">
+
+      Products
+
+    </a>
+
+
+    <a
+      routerLink="/about"
+      (click)="closeMenu()">
+
+      About
+
+    </a>
+
+
+    <a
+      routerLink="/contact"
+      (click)="closeMenu()">
+
+      Contact
+
+    </a>
+
+
+    <!-- ================= MOBILE ADMIN ================= -->
+
+    <a
+      *ngIf="isAdmin"
+      routerLink="/admin-dashboard"
+      (click)="closeMenu()">
+
+      📊 Dashboard
+
+    </a>
+
+
+    <!-- ================= MOBILE USER ================= -->
+
+    <a
+      *ngIf="!isAdmin && isLoggedIn"
+      routerLink="/cart"
+      (click)="closeMenu()">
+
+      🛒 Cart
+
+    </a>
+
+
+    <a
+      *ngIf="!isAdmin && isLoggedIn"
+      routerLink="/favorite"
+      (click)="closeMenu()">
+
+      ♡ Favorites
+
+    </a>
+
+
+    <!-- ================= MOBILE LOGIN ================= -->
+
+    <a
+      *ngIf="!isLoggedIn"
+      routerLink="/login"
+      (click)="closeMenu()">
+
+      Login
+
+    </a>
+
+
+    <!-- ================= MOBILE LOGOUT ================= -->
+
+    <button
+      *ngIf="isLoggedIn"
+      class="mobile-logout"
+      (click)="logout()">
+
+      🚪 Logout
+
+    </button>
+
+  </div>
+
+</nav>

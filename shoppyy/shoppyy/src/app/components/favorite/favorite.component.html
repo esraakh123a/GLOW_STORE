@@ -1,0 +1,150 @@
+
+<section class="favorites-page">
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="favorites-header">
+
+      <span class="subtitle">YOUR FAVORITES</span>
+
+      <h1>My Favorites ♡</h1>
+
+      <p>
+        Products you love and want to keep close.
+      </p>
+
+    </div>
+
+
+    <!-- Loading -->
+    <div
+      class="loading"
+      *ngIf="loading">
+
+      <p>Loading favorites...</p>
+
+    </div>
+
+
+    <!-- Empty -->
+    <div
+      class="empty-favorites"
+      *ngIf="!loading && favorites.length === 0">
+
+      <div class="empty-icon">
+        ♡
+      </div>
+
+      <h2>No Favorites Yet</h2>
+
+      <p>
+        You haven't added any products to your favorites.
+      </p>
+
+      <a
+        routerLink="/products"
+        class="browse-btn">
+
+        Browse Products
+
+      </a>
+
+    </div>
+
+
+    <!-- Favorites -->
+    <div
+      class="favorites-grid"
+      *ngIf="!loading && favorites.length > 0">
+
+      <div
+        class="favorite-card"
+        *ngFor="let product of favorites">
+
+        <!-- Image -->
+        <div class="favorite-image">
+
+          <span
+            class="discount-badge"
+            *ngIf="product.discount">
+
+            {{ product.discount }}% OFF
+
+          </span>
+
+          <img
+            [src]="getImageUrl(product.image)"
+            [alt]="product.name">
+
+          <button
+            class="remove-btn"
+            type="button"
+            (click)="removeFavorite(product._id)">
+
+            ♥
+            
+          </button>
+
+        </div>
+
+
+        <!-- Info -->
+        <div class="favorite-info">
+
+          <span class="category">
+            {{ product.category }}
+          </span>
+
+          <h3>
+            {{ product.name }}
+          </h3>
+
+
+          <!-- Price -->
+          <div class="price-section">
+
+            <span
+              class="old-price"
+              *ngIf="product.discount">
+
+              {{ product.price }} EGP
+
+            </span>
+
+            <span class="price">
+
+              {{
+                product.price -
+                (product.price * (product.discount || 0) / 100)
+                | number:'1.0-0'
+              }}
+
+              EGP
+
+            </span>
+
+          </div>
+
+
+          <!-- Add Cart -->
+          <button
+            class="add-cart-btn"
+            type="button"
+            (click)="addToCart(product._id)">
+
+            🛒 Add To Cart
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+```
+

@@ -1,0 +1,347 @@
+.register-page {
+  min-height: 100vh;
+  background: #fff8f7;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+}
+
+
+/* =========================
+   REGISTER CARD
+========================= */
+
+.register-container {
+  width: 100%;
+  max-width: 1100px;
+
+  background: #fff;
+
+  border-radius: 30px;
+  overflow: hidden;
+
+  display: flex;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.register-image {
+  width: 50%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+
+/* Image */
+
+.register-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* =========================
+   IMAGE TEXT
+========================= */
+
+.register-image .overlay {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  padding: 45px;
+
+  color: white;
+
+  z-index: 2;
+
+  background: linear-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.65)
+  );
+}
+
+
+.register-image h2 {
+  font-size: 36px;
+
+  font-weight: 700;
+
+  margin-bottom: 15px;
+}
+
+
+.register-image p {
+  font-size: 16px;
+
+  line-height: 1.7;
+
+  max-width: 400px;
+
+  margin: 0;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.register-form {
+  width: 50%;
+
+  padding: 55px 60px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.form-header {
+  margin-bottom: 30px;
+}
+
+
+.form-header h1 {
+  font-size: 38px;
+
+  font-weight: 600;
+
+  color: #182b3c;
+
+  margin-bottom: 10px;
+}
+
+
+.form-header p {
+  color: #999;
+
+  font-size: 15px;
+
+  margin: 0;
+}
+
+
+/* =========================
+   FORM GROUP
+========================= */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #333;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.form-control {
+  width: 100%;
+
+  height: 58px;
+
+  border-radius: 12px;
+
+  border: none;
+
+  background-color: #eef4fd;
+
+  padding: 0 18px;
+
+  font-size: 15px;
+
+  box-shadow: none;
+}
+
+
+.form-control:focus {
+  background-color: #eef4fd;
+
+  border: none;
+
+  outline: none;
+
+  box-shadow: 0 0 0 2px rgba(201, 130, 130, 0.2);
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.register-submit {
+  width: 100%;
+
+  height: 58px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background-color: #c98282;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+
+.register-submit:hover {
+  background-color: #b97070;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-text {
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #999;
+
+  font-size: 14px;
+}
+
+
+.login-text a {
+  color: #c98282;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+
+.login-text a:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================
+   TABLET / MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .register-page {
+    padding: 20px 15px;
+  }
+
+
+  .register-container {
+    flex-direction: column;
+
+    max-width: 500px;
+  }
+
+
+  .register-image {
+    width: 100%;
+
+    height: 280px;
+  }
+
+
+  .register-image img {
+    width: 100%;
+    height: 280px;
+
+    object-fit: cover;
+  }
+
+
+  .register-image .overlay {
+    padding: 30px;
+  }
+
+
+  .register-image h2 {
+    font-size: 28px;
+  }
+
+
+  .register-form {
+    width: 100%;
+
+    padding: 40px 25px;
+  }
+
+
+  .form-header h1 {
+    font-size: 30px;
+  }
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+  .register-image {
+    height: 230px;
+  }
+
+
+  .register-image img {
+    height: 230px;
+  }
+
+
+  .register-form {
+    padding: 35px 20px;
+  }
+}
+.register-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

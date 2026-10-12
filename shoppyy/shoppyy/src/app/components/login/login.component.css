@@ -1,0 +1,328 @@
+/* ================================
+   LOGIN PAGE
+================================ */
+
+.login-page {
+  min-height: calc(100vh - 75px);
+
+  background: #fff8f7;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 50px 20px;
+}
+
+
+/* ================================
+   LOGIN CONTAINER
+================================ */
+
+.login-container {
+  width: 100%;
+
+  max-width: 1000px;
+
+  min-height: 580px;
+
+  background: white;
+
+  border-radius: 25px;
+
+  overflow: hidden;
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ================================
+   LEFT IMAGE
+================================ */
+
+.login-image {
+  position: relative;
+
+  background-image:
+    url('/assets/images/eaf8a631e159201c470fdbb90760ec39.jpg');
+
+  background-size: cover;
+
+  background-position: center;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  padding: 40px;
+
+  color: white;
+}
+
+
+/* Overlay */
+
+.login-image::before {
+  content: '';
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.65),
+      rgba(0, 0, 0, 0.05)
+    );
+}
+
+
+/* Text */
+
+.overlay {
+  position: relative;
+
+  z-index: 2;
+}
+
+.overlay h2 {
+  font-size: 32px;
+
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  font-size: 15px;
+
+  line-height: 1.7;
+
+  max-width: 350px;
+}
+
+
+/* ================================
+   LOGIN FORM
+================================ */
+
+.login-form {
+  padding: 70px 55px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+/* Header */
+
+.form-header {
+  margin-bottom: 35px;
+}
+
+.form-header h1 {
+  color: #2d2d2d;
+
+  font-size: 34px;
+
+  margin-bottom: 10px;
+}
+
+.form-header p {
+  color: #999;
+
+  font-size: 14px;
+}
+
+
+/* ================================
+   FORM GROUP
+================================ */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+
+  color: #444;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border: 1px solid #eee;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  box-sizing: border-box;
+
+  transition: 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #c98282;
+
+  box-shadow:
+    0 0 0 3px rgba(201, 130, 130, 0.1);
+}
+
+
+/* ================================
+   OPTIONS
+================================ */
+
+.form-options {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+
+  font-size: 13px;
+}
+
+.remember {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #777;
+}
+
+.form-options a {
+  color: #c98282;
+
+  text-decoration: none;
+}
+
+.form-options a:hover {
+  text-decoration: underline;
+}
+
+
+/* ================================
+   LOGIN BUTTON
+================================ */
+
+.login-submit {
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #c98282;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+.login-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.login-submit:hover {
+  background: #b76f6f;
+
+  transform: translateY(-2px);
+}
+
+
+/* ================================
+   REGISTER
+================================ */
+
+.register-text {
+  text-align: center;
+
+  margin-top: 25px;
+
+  color: #999;
+
+  font-size: 14px;
+}
+
+.register-text a {
+  color: #c98282;
+
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+
+  .login-container {
+    grid-template-columns: 1fr;
+  }
+
+  .login-image {
+    min-height: 250px;
+  }
+
+  .login-form {
+    padding: 45px 30px;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .login-page {
+    padding: 25px 15px;
+  }
+
+  .login-form {
+    padding: 35px 20px;
+  }
+
+  .form-header h1 {
+    font-size: 28px;
+  }
+
+  .login-image {
+    min-height: 220px;
+  }
+
+}
